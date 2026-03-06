@@ -1,8 +1,11 @@
+import { products } from "../data/products.js";
+import { cart, addToCart } from "../data/cart.js";
+
 let htmlList = "";
 
 products.forEach((product) => {
   htmlList += `
-    <div class="product-container">
+    <div class="product-container js-product-container">
       <div class="product-image-container">
         <img
           class="product-image"
@@ -25,7 +28,7 @@ products.forEach((product) => {
       <div class="product-price">$${(product.priceCents / 100).toFixed(2)}</div>
 
       <div class="product-quantity-container">
-        <select>
+        <select class="js-selector">
           <option selected value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -53,23 +56,4 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-display").innerHTML = htmlList;
 
-document.querySelectorAll(".js-add-cart").forEach((button) => {
-  const productID = button.dataset.productId;
-  button.addEventListener("click", () => {
-    let matchingItem;
-
-    cart.forEach((item) => {
-      if (productID === item.productID) {
-        matchingItem = item;
-      }
-    });
-
-    if (matchingItem) {
-      matchingItem.quantity++;
-    } else {
-      cart.push({ productID, quantity: 1 });
-    }
-
-    console.log(cart);
-  });
-});
+addToCart();
