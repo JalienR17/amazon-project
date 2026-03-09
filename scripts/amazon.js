@@ -6,10 +6,11 @@ import {
   forEachCartButton,
 } from "../data/cart.js";
 
-let htmlList = "";
+const generateProductsHtml = (productsToRender) => {
+  let htmlList = "";
 
-products.forEach((product) => {
-  htmlList += `
+  products.forEach((product) => {
+    htmlList += `
     <div class="product-container js-product-container">
       <div class="product-image-container">
         <img
@@ -57,8 +58,10 @@ products.forEach((product) => {
       <button class="add-to-cart-button button-primary js-add-cart" data-product-id="${product.id}">Add to Cart</button>
     </div>
   `;
-});
+  });
 
-document.querySelector(".js-products-display").innerHTML = htmlList;
+  document.querySelector(".js-products-display").innerHTML = htmlList;
+};
 
+generateProductsHtml(products);
 forEachCartButton();
