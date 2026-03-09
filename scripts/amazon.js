@@ -1,5 +1,10 @@
 import { products } from "../data/products.js";
-import { cart, addToCart } from "../data/cart.js";
+import {
+  cart,
+  addToCart,
+  updateCartQuantity,
+  forEachCartButton,
+} from "../data/cart.js";
 
 let htmlList = "";
 
@@ -56,4 +61,4 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-display").innerHTML = htmlList;
 
-addToCart();
+forEachCartButton();
