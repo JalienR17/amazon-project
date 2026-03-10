@@ -1,4 +1,4 @@
-export const cart = [];
+export let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 export const addToCart = (productID, selection) => {
   let matchingProduct;
@@ -14,6 +14,8 @@ export const addToCart = (productID, selection) => {
   } else {
     cart.push({ productID, quantity: selection });
   }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
 };
 
 export const updateCartQuantity = () => {
@@ -23,7 +25,12 @@ export const updateCartQuantity = () => {
     cartQuantity += product.quantity;
   });
 
-  document.querySelector(".js-cart-quantity").innerText = cartQuantity;
+  const cartIcon = document.querySelector(".js-cart-quantity");
+  if (cartIcon) {
+    cartIcon.innerText = cartQuantity;
+  }
+
+  return cartQuantity;
 };
 
 export const forEachCartButton = () => {
@@ -41,3 +48,8 @@ export const forEachCartButton = () => {
     });
   });
 };
+
+export function clearCart() {
+  cart = [];
+  localStorage.clear();
+}
