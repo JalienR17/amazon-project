@@ -15,7 +15,7 @@ export const addToCart = (productID, selection) => {
     cart.push({ productID, quantity: selection });
   }
 
-  localStorage.setItem("cart", JSON.stringify(cart));
+  saveToLocalStorage();
 };
 
 export const updateCartQuantity = () => {
@@ -49,7 +49,40 @@ export const forEachCartButton = () => {
   });
 };
 
-export function clearCart() {
-  cart = [];
-  localStorage.clear();
-}
+export const deleteFromCart = (productId) => {
+  cart = cart.filter(
+    (item) => productId !== item.productID || item.quantity !== 1,
+  ); // one linner filter function, which simplifies the code
+  /*const newCart = [];
+
+  cart.forEach((item) => {
+    if (item.productID !== productId || item.quantity !== 1) {
+      newCart.push(item);
+    }
+  });
+
+  cart = newCart;
+  const container = document.querySelector(
+    `.js-for-surgical-removal-${productId}`,
+  ); // cool way to remove the container and useful to learn for future projects but the HTML re-render is actually better in this scenerio since its based off of the actual cart. One source of truth
+  container.remove();*/
+  saveToLocalStorage();
+};
+
+export const deleteQuantity = (productId) => {
+  cart.forEach((item) => {
+    /* if (productId === item.productID && item.quantity > 1) {
+      item.quantity--;
+    }*/
+
+    if (productId === item.productID) {
+      if (item.quantity > 1) {
+        item.quantity--;
+      }
+    }
+  });
+};
+
+export const saveToLocalStorage = () => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+};

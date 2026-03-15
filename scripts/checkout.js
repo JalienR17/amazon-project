@@ -1,4 +1,9 @@
-import { cart, clearCart, updateCartQuantity } from "../data/cart.js";
+import {
+  cart,
+  updateCartQuantity,
+  deleteFromCart,
+  deleteQuantity,
+} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
@@ -6,6 +11,12 @@ const generateCartHtml = () => {
   const cartQuantity = updateCartQuantity();
   const checkoutInnerText = `Checkout (<a class="return-to-home-link" href="amazon.html">${cartQuantity} items</a>)`;
   let htmlList = "";
+
+  if (cart.length === 0) {
+    document.querySelector(".js-empty-cart-title").innerHTML =
+      "<p> Your Cart Is Empty! :( </p>";
+    document.querySelector(".js-payment-summary").remove();
+  }
 
   cart.forEach((item) => {
     products.forEach((product) => {
@@ -17,7 +28,7 @@ const generateCartHtml = () => {
 
       if (matchingProduct) {
         htmlList += `
-          <div class="cart-item-container">
+          <div class="cart-item-container js-for-surgical-removal-${item.productID}">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -40,7 +51,7 @@ const generateCartHtml = () => {
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary js-delete-item">
+                  <span data-id="${product.id}"class="delete-quantity-link link-primary js-delete-item">
                     Delete
                   </span>
                 </div>
@@ -53,7 +64,7 @@ const generateCartHtml = () => {
                 <div class="delivery-option">
                   <input type="radio" checked
                     class="delivery-option-input"
-                    name="delivery-option-1">
+                    name=${product.id}>
                   <div>
                     <div class="delivery-option-date">
                       Tuesday, June 21
@@ -66,7 +77,7 @@ const generateCartHtml = () => {
                 <div class="delivery-option">
                   <input type="radio"
                     class="delivery-option-input"
-                    name="delivery-option-1">
+                    name=${product.id}>
                   <div>
                     <div class="delivery-option-date">
                       Wednesday, June 15
@@ -79,7 +90,7 @@ const generateCartHtml = () => {
                 <div class="delivery-option">
                   <input type="radio"
                     class="delivery-option-input"
-                    name="delivery-option-1">
+                    name=${product.id}>
                   <div>
                     <div class="delivery-option-date">
                       Monday, June 13
@@ -102,7 +113,9 @@ const generateCartHtml = () => {
 
   document.querySelectorAll(".js-delete-item").forEach((link) => {
     link.addEventListener("click", () => {
-      clearCart();
+      const productId = link.dataset.id;
+      deleteFromCart(productId);
+      deleteQuantity(productId);
       generateCartHtml();
     });
   });
