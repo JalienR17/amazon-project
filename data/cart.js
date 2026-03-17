@@ -38,9 +38,8 @@ export const forEachCartButton = () => {
     const productID = button.dataset.productId;
 
     button.addEventListener("click", () => {
-      const selector = button
-        .closest(".product-container")
-        .querySelector(".js-selector");
+      const container = button.closest(".product-container");
+      const selector = container.querySelector(".js-selector");
       const selection = Number(selector.value);
 
       addToCart(productID, selection);
@@ -51,12 +50,12 @@ export const forEachCartButton = () => {
 
 export const deleteFromCart = (productId) => {
   cart = cart.filter(
-    (item) => productId !== item.productID || item.quantity !== 1,
+    (item) => productId !== item.productID || item.quantity > 1,
   ); // one linner filter function, which simplifies the code
   /*const newCart = [];
 
   cart.forEach((item) => {
-    if (item.productID !== productId || item.quantity !== 1) {
+    if (item.productID !== productId || item.quantity > 1) {
       newCart.push(item);
     }
   });
