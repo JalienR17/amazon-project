@@ -12,7 +12,7 @@ export const addToCart = (productID, selection) => {
   if (matchingProduct) {
     matchingProduct.quantity += selection;
   } else {
-    cart.push({ productID, quantity: selection });
+    cart.push({ productID, quantity: selection, deliveryOptionId: "1" });
   }
 
   saveToLocalStorage();
