@@ -85,3 +85,33 @@ export const deleteQuantity = (productId) => {
 export const saveToLocalStorage = () => {
   localStorage.setItem("cart", JSON.stringify(cart));
 };
+
+export const saveNewQuantity = (productId, quantityInput) => {
+  const newQuantity = Number(quantityInput.value);
+
+  cart.forEach((item) => {
+    if (productId === item.productID) {
+      if (newQuantity >= 0 && newQuantity < 1000) {
+        item.quantity = newQuantity;
+      } else {
+        alert("Please enter a valid quantity (0-999)");
+      }
+    }
+
+    if (newQuantity === 0) {
+      deleteFromCart(productId);
+    }
+  });
+
+  saveToLocalStorage();
+};
+
+export const updateDeliveryOptionId = (productId, optionId) => {
+  const matchingItem = cart.find((item) => item.productID === productId);
+
+  if (matchingItem) {
+    matchingItem.deliveryOptionId = optionId;
+  }
+
+  saveToLocalStorage();
+};

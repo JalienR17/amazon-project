@@ -4,6 +4,8 @@ import {
   deleteFromCart,
   deleteQuantity,
   saveToLocalStorage,
+  updateDeliveryOptionId,
+  saveNewQuantity,
 } from "../data/cart.js";
 import products from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
@@ -24,9 +26,9 @@ const deliveryOptionsHtml = (productId, deliveryOptionId) => {
     const isChecked = option.id === deliveryOptionId;
 
     deliveryOptionsHtml += `
-        <div class="delivery-option">
-          <input data-id="${option.id}" type="radio" ${isChecked ? "checked" : ""}
-            class="delivery-option-input js-delivery-option-input"
+        <div class="delivery-option" data-option-id="${option.id}" data-product-id="${productId}">
+          <input type="radio" ${isChecked ? "checked" : ""}
+            class="delivery-option-input"
             name=${productId}>
           <div>
             <div class="delivery-option-date">
@@ -129,8 +131,8 @@ const generateCartHtml = () => {
       const productId = link.dataset.id;
       deleteFromCart(productId);
       deleteQuantity(productId);
-      generateCartHtml();
       saveToLocalStorage();
+      generateCartHtml();
     });
   });
 
@@ -146,55 +148,27 @@ const generateCartHtml = () => {
       const saveLink = container.querySelector(".js-save-link");
       const quantityInput = container.querySelector(".js-input");
 
-      const saveNewQuantity = () => {
-        const newQuantity = Number(quantityInput.value);
-
-        cart.forEach((item) => {
-          if (productId === item.productID) {
-            if (newQuantity >= 0 && newQuantity < 1000) {
-              item.quantity = newQuantity;
-            } else {
-              alert("Please enter a valid quantity (0-999)");
-            }
-          }
-
-          if (newQuantity === 0) {
-            deleteFromCart(productId);
-          }
-        });
-
-        saveToLocalStorage();
+      saveLink.addEventListener("click", () => {
+        saveNewQuantity(productId, quantityInput);
         generateCartHtml();
-      };
+      });
 
-      saveLink.addEventListener("click", saveNewQuantity);
       quantityInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
-          saveNewQuantity();
+          saveNewQuantity(productId, quantityInput);
+          generateCartHtml();
         }
       });
     });
   });
 
-  document
-    .querySelectorAll(".js-delivery-option-input")
-    .forEach((optionInput) => {
-      const optionId = optionInput.dataset.id;
-      const itemContainer = optionInput.closest(".cart-item-container");
-      const productId = itemContainer.dataset.id;
-
-      optionInput.addEventListener("click", () => {
-        // Find the SPECIFIC item that matches this product ID in order to store its value and use it for modifications
-        const matchingItem = cart.find((item) => item.productID === productId);
-
-        if (matchingItem) {
-          matchingItem.deliveryOptionId = optionId;
-
-          saveToLocalStorage();
-          generateCartHtml();
-        }
-      });
+  document.querySelectorAll(".delivery-option").forEach((container) => {
+    const { optionId, productId } = container.dataset;
+    container.addEventListener("click", () => {
+      updateDeliveryOptionId(productId, optionId);
+      generateCartHtml();
     });
+  });
 };
 
 generateCartHtml();
