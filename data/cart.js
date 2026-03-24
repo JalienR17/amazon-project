@@ -1,3 +1,7 @@
+import { products } from "./products.js";
+import { deliveryOptions } from "./delivery-options.js";
+import { calcTax } from "../scripts/utils/money.js";
+
 export let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 export const addToCart = (productID, selection) => {
@@ -114,4 +118,34 @@ export const updateDeliveryOptionId = (productId, optionId) => {
   }
 
   saveToLocalStorage();
+};
+
+export const calcPaymentSummary = () => {
+  let itemTotal = 0;
+  let allItemsTotal = 0;
+  let totalShipping = 0;
+
+  cart.forEach((item) => {
+    const matchingProduct = products.find(
+      (product) => product.id === item.productID,
+    );
+    const matchingOption = deliveryOptions.find(
+      (option) => option.id === item.deliveryOptionId,
+    );
+
+    if (matchingProduct) {
+      itemTotal = item.quantity * matchingProduct.priceCents;
+      allItemsTotal += itemTotal;
+    }
+
+    if (matchingOption) {
+      totalShipping += matchingOption.deliveryPrice;
+    }
+  });
+
+  const shippingPlusItems = totalShipping + allItemsTotal;
+  const tax = calcTax(shippingPlusItems);
+  const grandTotal = Number(tax) * 100 + shippingPlusItems;
+
+  return { shippingPlusItems, tax, grandTotal, allItemsTotal, totalShipping };
 };

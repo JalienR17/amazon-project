@@ -11,6 +11,7 @@ import products from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import deliveryOptions from "../../data/delivery-options.js";
+import { generatePaymentSummary } from "./payment-summary.js";
 
 export const deliveryOptionsHtml = (productId, deliveryOptionId) => {
   let deliveryOptionsHtml = "";
@@ -133,6 +134,7 @@ export const generateCartHtml = () => {
       deleteQuantity(productId);
       saveToLocalStorage();
       generateCartHtml();
+      generatePaymentSummary();
     });
   });
 
@@ -151,12 +153,14 @@ export const generateCartHtml = () => {
       saveLink.addEventListener("click", () => {
         saveNewQuantity(productId, quantityInput);
         generateCartHtml();
+        generatePaymentSummary();
       });
 
       quantityInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
           saveNewQuantity(productId, quantityInput);
           generateCartHtml();
+          generatePaymentSummary();
         }
       });
     });
@@ -167,6 +171,7 @@ export const generateCartHtml = () => {
     container.addEventListener("click", () => {
       updateDeliveryOptionId(productId, optionId);
       generateCartHtml();
+      generatePaymentSummary();
     });
   });
 };
