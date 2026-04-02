@@ -1,6 +1,6 @@
-import { products } from "./products.js";
-import { deliveryOptions } from "./delivery-options.js";
 import { calcTax } from "../scripts/utils/money.js";
+import { getOption } from "./delivery-options.js";
+import { getProduct } from "./products.js";
 
 export let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -111,7 +111,7 @@ export const saveNewQuantity = (productId, quantityInput) => {
 };
 
 export const updateDeliveryOptionId = (productId, optionId) => {
-  const matchingItem = cart.find((item) => item.productID === productId);
+  const matchingItem = getItem(productId);
 
   if (matchingItem) {
     matchingItem.deliveryOptionId = optionId;
@@ -121,21 +121,15 @@ export const updateDeliveryOptionId = (productId, optionId) => {
 };
 
 export const calcPaymentSummary = () => {
-  let itemTotal = 0;
   let allItemsTotal = 0;
   let totalShipping = 0;
 
   cart.forEach((item) => {
-    const matchingProduct = products.find(
-      (product) => product.id === item.productID,
-    );
-    const matchingOption = deliveryOptions.find(
-      (option) => option.id === item.deliveryOptionId,
-    );
+    const matchingProduct = getProduct(item.productID);
+    const matchingOption = getOption(item.deliveryOptionId);
 
     if (matchingProduct) {
-      itemTotal = item.quantity * matchingProduct.priceCents;
-      allItemsTotal += itemTotal;
+      allItemsTotal += item.quantity * matchingProduct.priceCents;
     }
 
     if (matchingOption) {
@@ -148,4 +142,9 @@ export const calcPaymentSummary = () => {
   const grandTotal = Number(tax) * 100 + shippingPlusItems;
 
   return { shippingPlusItems, tax, grandTotal, allItemsTotal, totalShipping };
+};
+
+export const getItem = (productId) => {
+  const matchingItem = cart.find((item) => item.productID === productId);
+  return matchingItem;
 };

@@ -16,4 +16,9 @@ export const deliveryOptions = [
   },
 ];
 
-export default deliveryOptions;
+export const getOption = (optionId) => {
+  const matchingOption = deliveryOptions.find(
+    (option) => option.id === optionId,
+  );
+  return matchingOption || deliveryOptions[0];
+};
