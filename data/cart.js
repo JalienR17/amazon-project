@@ -2,7 +2,12 @@ import { calcTax } from "../scripts/utils/money.js";
 import { getOption } from "./delivery-options.js";
 import { getProduct } from "./products.js";
 
-export let cart = JSON.parse(localStorage.getItem("cart")) || [];
+export let cart;
+
+export const loadCartFromStorage = () => {
+  cart = JSON.parse(localStorage.getItem("cart")) || [];
+};
+loadCartFromStorage();
 
 export const addToCart = (productID, selection) => {
   let matchingProduct;
