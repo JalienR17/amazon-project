@@ -1,7 +1,8 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jasmine Spec Runner v5.1.1</title>
 
     <link
@@ -14,9 +15,12 @@
     <script src="lib/jasmine-5.1.1/jasmine-html.js"></script>
     <script src="lib/jasmine-5.1.1/boot0.js"></script>
     <script src="lib/jasmine-5.1.1/boot1.js"></script>
-    <script type="module" src="utils/money-test.js"></script>
-    <script type="module" src="data/cart-test.js"></script>
+    <script type="module" src="utils/money-test.js" defer></script>
+    <script type="module" src="data/cart-test.js" defer></script>
+    <script type="module" src="checkout/order-summary-test.js" defer></script>
   </head>
 
-  <body></body>
+  <body>
+    <div style="display: none" class="js-test-container"></div>
+  </body>
 </html>

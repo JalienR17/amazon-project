@@ -78,7 +78,7 @@ export const generateCartHtml = () => {
 
     if (matchingProduct) {
       itemsHtml += `
-          <div class="cart-item-container" data-id="${matchingProduct.id}">
+          <div class="cart-item-container js-cart-item-container js-cart-item-container-${matchingProduct.id}" data-id="${matchingProduct.id}">
             <div class="delivery-date">
               Delivery Date: ${formattedDate}
             </div>
@@ -95,13 +95,13 @@ export const generateCartHtml = () => {
                   $${formatCurrency(matchingProduct.priceCents)}
                 </div>
                 <div class="product-quantity">
-                  <span>
+                  <span class="js-quantity-${matchingProduct.id}">
                     Quantity: <span class="quantity-label js-quantity">${item.quantity}</span>
                   </span>
                   <span data-id="${matchingProduct.id}" class="update-quantity-link link-primary js-update-item">
                     Update
                   </span>
-                  <span data-id="${matchingProduct.id}" class="delete-quantity-link link-primary js-delete-item">
+                  <span data-id="${matchingProduct.id}" class="delete-quantity-link link-primary js-delete-item js-delete-link-${matchingProduct.id}">
                     Delete
                   </span>
                 </div>
