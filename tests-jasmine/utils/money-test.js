@@ -52,4 +52,12 @@ describe("Test Suite: formatCurrency", () => {
   it("Checks At Zero", () => {
     expect(formatCurrency(0)).toEqual("0.00");
   });
+
+  it("Checks to the nearest cent if it rounds up", () => {
+    expect(formatCurrency(1000.5)).toEqual("10.01");
+  });
+
+  it("Checks to the nearest cent if it rounds down", () => {
+    expect(formatCurrency(1000.4)).toEqual("10.00");
+  });
 });

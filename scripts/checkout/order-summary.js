@@ -87,7 +87,7 @@ export const generateCartHtml = () => {
               <img class="product-image"
                 src=${matchingProduct.image}>
 
-              <div class="cart-item-details">
+              <div class="cart-item-details js-cart-item-details-${matchingProduct.id}">
                 <div class="product-name">
                   ${matchingProduct.name}
                 </div>
