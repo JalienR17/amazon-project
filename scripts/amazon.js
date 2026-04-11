@@ -1,11 +1,7 @@
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
-import {
-  cart,
-  addToCart,
-  updateCartQuantity,
-  forEachCartButton,
-} from "../data/cart.js";
+//import { updateCartQuantity, forEachCartButton } from "../data/cart.js";
+import { cart } from "../data/cart-oop.js";
 
 const generateProductsHtml = (productsToRender) => {
   let htmlList = "";
@@ -65,5 +61,5 @@ const generateProductsHtml = (productsToRender) => {
 };
 
 generateProductsHtml(products);
-forEachCartButton();
-updateCartQuantity();
+cart.forEachCartButton();
+cart.updateCartQuantity();

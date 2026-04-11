@@ -1,9 +1,10 @@
-import { updateCartQuantity, calcPaymentSummary } from "../../data/cart.js";
+//import { updateCartQuantity, calcPaymentSummary } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
+import { cart } from "../../data/cart-oop.js";
 
 export const generatePaymentSummary = () => {
-  const cartQuantity = updateCartQuantity();
-  const total = calcPaymentSummary();
+  const cartQuantity = cart.updateCartQuantity();
+  const total = cart.calcPaymentSummary();
   const summaryContainer = document.querySelector(".js-payment-summary");
 
   const html = ` 

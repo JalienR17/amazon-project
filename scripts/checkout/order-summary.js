@@ -1,4 +1,4 @@
-import {
+/*import {
   cart,
   updateCartQuantity,
   deleteFromCart,
@@ -6,12 +6,13 @@ import {
   saveToLocalStorage,
   updateDeliveryOptionId,
   saveNewQuantity,
-} from "../../data/cart.js";
+} from "../../data/cart.js";*/
 import { formatCurrency } from "../utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { deliveryOptions, getOption } from "../../data/delivery-options.js";
 import { generatePaymentSummary } from "./payment-summary.js";
 import { getProduct } from "../../data/products.js";
+import { cart } from "../../data/cart-oop.js";
 
 export const deliveryOptionsHtml = (productId, deliveryOptionId) => {
   let deliveryOptionsHtml = "";
@@ -46,17 +47,17 @@ export const deliveryOptionsHtml = (productId, deliveryOptionId) => {
 };
 
 export const generateCartHtml = () => {
-  const cartQuantity = updateCartQuantity();
+  const cartQuantity = cart.updateCartQuantity();
   const checkoutInnerText = `Checkout (<a class="return-to-home-link" href="amazon.html">${cartQuantity} items</a>)`;
   let itemsHtml = "";
 
-  if (cart.length === 0) {
+  if (cart.cartItems.length === 0) {
     document.querySelector(".js-empty-cart-title").innerHTML =
       "<p> Your Cart Is Empty! :( </p>";
     document.querySelector(".js-payment-summary").remove();
   }
 
-  cart.forEach((item) => {
+  cart.cartItems.forEach((item) => {
     //products.forEach((product) => {
     //let matchingProduct;
     //let selectedOption;
@@ -126,9 +127,9 @@ export const generateCartHtml = () => {
   document.querySelectorAll(".js-delete-item").forEach((link) => {
     link.addEventListener("click", () => {
       const productId = link.dataset.id;
-      deleteFromCart(productId);
-      deleteQuantity(productId);
-      saveToLocalStorage();
+      cart.deleteFromCart(productId);
+      cart.deleteQuantity(productId);
+      cart.saveToLocalStorage();
       generateCartHtml();
       generatePaymentSummary();
     });
@@ -154,7 +155,7 @@ export const generateCartHtml = () => {
 
       quantityInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
-          saveNewQuantity(productId, quantityInput);
+          cart.saveNewQuantity(productId, quantityInput);
           generateCartHtml();
           generatePaymentSummary();
         }
@@ -165,7 +166,7 @@ export const generateCartHtml = () => {
   document.querySelectorAll(".delivery-option").forEach((container) => {
     const { optionId, productId } = container.dataset;
     container.addEventListener("click", () => {
-      updateDeliveryOptionId(productId, optionId);
+      cart.updateDeliveryOptionId(productId, optionId);
       generateCartHtml();
       generatePaymentSummary();
     });
