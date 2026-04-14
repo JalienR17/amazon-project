@@ -11,7 +11,7 @@ import { formatCurrency } from "../utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { deliveryOptions, getOption } from "../../data/delivery-options.js";
 import { generatePaymentSummary } from "./payment-summary.js";
-import { getProduct } from "../../data/products.js";
+import { getProduct, products } from "../../data/products.js";
 import { cart } from "../../data/cart-oop.js";
 
 export const deliveryOptionsHtml = (productId, deliveryOptionId) => {
@@ -93,7 +93,7 @@ export const generateCartHtml = () => {
                   ${matchingProduct.name}
                 </div>
                 <div class="product-price">
-                  $${formatCurrency(matchingProduct.priceCents)}
+                  ${matchingProduct.getPrice()}
                 </div>
                 <div class="product-quantity">
                   <span class="js-quantity-${matchingProduct.id}">

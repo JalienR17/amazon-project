@@ -1,3 +1,43 @@
+import { formatCurrency } from "../scripts/utils/money.js";
+
+class Product {
+  id;
+  image;
+  name;
+  rating = {};
+  priceCents;
+  keywords = [];
+
+  constructor(productDetails) {
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+    this.keywords = productDetails.keywords;
+  }
+
+  getRatingStars() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`;
+  }
+
+  getPrice() {
+    return `$${formatCurrency(this.priceCents)}`;
+  }
+}
+
+/*const product1 = new Product({
+  id: "bc2847e9-5323-403f-b7cf-57fde044a955",
+  image: "images/products/men-cozy-fleece-zip-up-hoodie-red.jpg",
+  name: "Men's Full-Zip Hooded Fleece Sweatshirt",
+  rating: {
+    stars: 4.5,
+    count: 3157,
+  },
+  priceCents: 2400,
+  keywords: ["sweaters", "hoodies", "apparel", "mens"],
+});*/
+
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -469,7 +509,9 @@ export const products = [
     priceCents: 2400,
     keywords: ["sweaters", "hoodies", "apparel", "mens"],
   },
-];
+].map((productDetails) => {
+  return new Product(productDetails);
+});
 
 export const getProduct = (productId) => {
   const matchingProduct = products.find((product) => product.id === productId);
