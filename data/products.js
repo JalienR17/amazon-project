@@ -24,19 +24,26 @@ class Product {
   getPrice() {
     return `$${formatCurrency(this.priceCents)}`;
   }
+
+  createLink() {
+    // polymorphing uses class method overwritting to make methods dynamic. Depending on the conditional match of a discriminator to select the proper class and methods for that data.
+    return ``;
+  }
 }
 
-/*const product1 = new Product({
-  id: "bc2847e9-5323-403f-b7cf-57fde044a955",
-  image: "images/products/men-cozy-fleece-zip-up-hoodie-red.jpg",
-  name: "Men's Full-Zip Hooded Fleece Sweatshirt",
-  rating: {
-    stars: 4.5,
-    count: 3157,
-  },
-  priceCents: 2400,
-  keywords: ["sweaters", "hoodies", "apparel", "mens"],
-});*/
+class Clothing extends Product {
+  sizeChartLink;
+
+  constructor(details) {
+    super(details);
+    this.sizeChartLink = details.sizeChartLink;
+  }
+
+  createLink() {
+    // polymorphing uses class method overwritting to make methods dynamic. Depending on the conditional match of a discriminator to select the proper class and methods for that data.
+    return `<a href="images/clothing-size-chart.png" target="_blank">Size Chart</a>`;
+  }
+}
 
 export const products = [
   {
@@ -509,11 +516,16 @@ export const products = [
     priceCents: 2400,
     keywords: ["sweaters", "hoodies", "apparel", "mens"],
   },
-].map((productDetails) => {
-  return new Product(productDetails);
+].map((details) => {
+  if (details.type === "clothing") {
+    return new Clothing(details);
+  } else {
+    return new Product(details);
+  }
 });
 
 export const getProduct = (productId) => {
   const matchingProduct = products.find((product) => product.id === productId);
   return matchingProduct;
 };
+
