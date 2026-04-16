@@ -307,4 +307,41 @@ class CartClass {
   }
 }
 
+/* 
+Built in javascript classes 
+date = new date(); 
+console.log(date); 
+console.log(date.toLocalTimeString());
+xhr = new XMLHttpRequest();
+*/
+
+/*
+const object1 = {
+  // Inside a method this points to the object it belongs to.
+  method: function () {
+    console.log(this);
+  },
+
+  method2: function () {
+    // In order to access and call methods within the object without the need to use the objects name. If the objects name is changed the code stayes dynamic and changes with the source.
+    this.method();
+  },
+};
+object1.method2();
+
+function logThis() {
+  // Inside a function this is obviously undefined as it stays within the functions scope, but a cool feature of javascript allows us to change the value from outside the function by using .call();
+  console.log(this);
+
+  [1, 2, 3].forEach((num) => {
+    console.log(this); // Inside arrow functions this behaves differently, its allowed to reach outside the function to access its parent. Unlike function declarations where its confined to the functions scope. As you can see in this example its been implemented for the use of forEach loops. 
+  });
+}
+
+logThis.call(
+  // note this only works with a function declaration and not an expression
+  "I just changed the value of the undefined 'this' inside the logThis(); function",
+);
+*/
+
 export const cart = new CartClass("amazon-reg-cart"); //Cart("amazon-reg-cart");
