@@ -24,7 +24,7 @@ describe("Test Suite: generateCartHtml", () => {
         },
       ]);
     });
-    cart.loadCartFromStorage();
+    cart._loadCartFromStorage();
     generateCartHtml();
   });
 
