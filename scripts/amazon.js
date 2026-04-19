@@ -1,9 +1,9 @@
-import { products } from "../data/products.js";
+import { products, loadProductsAPI } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 //import { updateCartQuantity, forEachCartButton } from "../data/cart.js";
 import { cart } from "../data/cart-oop.js";
 
-const generateProductsHtml = (productsToRender) => {
+export const generateProductsHtml = () => {
   let htmlList = "";
 
   products.forEach((product) => {
@@ -60,6 +60,8 @@ const generateProductsHtml = (productsToRender) => {
   document.querySelector(".js-products-display").innerHTML = htmlList;
 };
 
-generateProductsHtml(products);
-cart.forEachCartButton();
-cart.updateCartQuantity();
+loadProductsAPI(() => {
+  generateProductsHtml();
+  cart.forEachCartButton();
+  cart.updateCartQuantity();
+});

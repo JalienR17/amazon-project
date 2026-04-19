@@ -3,8 +3,10 @@ import {
   deliveryOptionsHtml,
 } from "./checkout/order-summary.js";
 import { generatePaymentSummary } from "./checkout/payment-summary.js";
-import "../data/backend-practice.js";
+import { loadProductsAPI } from "../data/products.js";
 
-deliveryOptionsHtml();
-generatePaymentSummary();
-generateCartHtml();
+loadProductsAPI(() => {
+  deliveryOptionsHtml();
+  generatePaymentSummary();
+  generateCartHtml();
+});

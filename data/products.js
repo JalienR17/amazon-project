@@ -45,7 +45,26 @@ class Clothing extends Product {
   }
 }
 
-export const products = [
+export let products = [];
+
+export const loadProductsAPI = (functions) => {
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", () => {
+    products = JSON.parse(xhr.response).map((details) => {
+      if (details.type === "clothing") {
+        return new Clothing(details);
+      } else {
+        return new Product(details);
+      }
+    });
+    console.log("Products received from API");
+    functions();
+  });
+  xhr.open("GET", "https://supersimplebackend.dev/products");
+  xhr.send();
+};
+
+/*export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -522,10 +541,9 @@ export const products = [
   } else {
     return new Product(details);
   }
-});
+});*/
 
 export const getProduct = (productId) => {
   const matchingProduct = products.find((product) => product.id === productId);
   return matchingProduct;
 };
-
