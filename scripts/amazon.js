@@ -2,6 +2,7 @@ import { products, loadProductsAPI } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 //import { updateCartQuantity, forEachCartButton } from "../data/cart.js";
 import { cart } from "../data/cart-oop.js";
+import { loadFakeCartAPI } from "../data/cart.js";
 
 export const generateProductsHtml = () => {
   let htmlList = "";
@@ -60,7 +61,18 @@ export const generateProductsHtml = () => {
   document.querySelector(".js-products-display").innerHTML = htmlList;
 };
 
-loadProductsAPI(() => {
+Promise.all([
+  new Promise((moveOn) => {
+    loadProductsAPI(() => {
+      moveOn();
+    });
+  }),
+  new Promise((moveOn) => {
+    loadFakeCartAPI(() => {
+      moveOn();
+    });
+  }),
+]).then(() => {
   generateProductsHtml();
   cart.forEachCartButton();
   cart.updateCartQuantity();

@@ -57,8 +57,13 @@ export const loadProductsAPI = (functions) => {
         return new Product(details);
       }
     });
-    console.log("Products received from API");
-    functions();
+
+    if (products) {
+      console.log("Products received from API");
+      functions();
+    } else {
+      console.log("Error loading products API");
+    }
   });
   xhr.open("GET", "https://supersimplebackend.dev/products");
   xhr.send();

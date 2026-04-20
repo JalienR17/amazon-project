@@ -153,3 +153,19 @@ export const getItem = (productId) => {
   const matchingItem = cart.find((item) => item.productID === productId);
   return matchingItem;
 };
+
+export const loadFakeCartAPI = (functions) => {
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", () => {
+    const fakeCart = xhr.response;
+
+    if (fakeCart) {
+      console.log("Fake cart received from API");
+      functions();
+    } else {
+      console.log("Error loading cart API");
+    }
+  });
+  xhr.open("GET", "https://supersimplebackend.dev/products");
+  xhr.send();
+};
