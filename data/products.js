@@ -50,6 +50,10 @@ export let products = [];
 export const loadProductsAPI = (functions) => {
   const xhr = new XMLHttpRequest();
   xhr.addEventListener("load", () => {
+    if (xhr.status >= 400) {
+      console.error("Server Error:", xhr.status);
+      return;
+    }
     products = JSON.parse(xhr.response).map((details) => {
       if (details.type === "clothing") {
         return new Clothing(details);
@@ -58,15 +62,59 @@ export const loadProductsAPI = (functions) => {
       }
     });
 
-    if (products) {
-      console.log("Products received from API");
-      functions();
-    } else {
-      console.log("Error loading products API");
-    }
+    console.log("Products received from API");
   });
   xhr.open("GET", "https://supersimplebackend.dev/products");
   xhr.send();
+  xhr.addEventListener("error", (error) => {
+    console.log("Error Recieiving API", "Error Details:", error);
+  });
+  functions();
+};
+
+export const fetchProductsAPI = () => {
+  const promise = fetch("https://supersimplebackend.dev/products")
+    .then((response) => {
+      //throw "This is how you set a manual error for testing";
+      return response.json();
+    })
+    .then((data) => {
+      products = data.map((details) => {
+        if (details.type === "clothing") {
+          return new Clothing(details);
+        } else {
+          return new Product(details);
+        }
+      });
+      console.log("Products received from API");
+    })
+    .catch((error) => {
+      console.log("Error Recieiving API", "Error Details:", error);
+    });
+
+  return promise;
+};
+
+export const fetchProductsAsync = async () => {
+  try {
+    //throw "test error";
+    const response = await fetch("https://supersimplebackend.dev/products");
+    if (!response.ok) {
+      // This 'throw' sends the code straight to the 'catch' block below if a server 400 or above error response is detected
+      throw new Error(`Server Error: ${response.status}`);
+    }
+    const data = await response.json();
+    products = data.map((details) => {
+      if (details.type === "clothing") {
+        return new Clothing(details);
+      } else {
+        return new Product(details);
+      }
+    });
+    console.log("Products received from API");
+  } catch (error) {
+    console.log("Error Recieiving Products From API", error);
+  }
 };
 
 /*export const products = [

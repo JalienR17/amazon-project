@@ -1,15 +1,15 @@
 import { generateCartHtml } from "../../scripts/checkout/order-summary.js";
 import { cart } from "../../data/cart-oop.js";
-import { loadProductsAPI } from "../../data/products.js";
+import { fetchProductsAsync } from "../../data/products.js";
 
 const orderSummaryTest = () => {
   describe("Test Suite: generateCartHtml", () => {
     const productId1 = "e43638ce-6aa0-4b85-b27f-e1d07eb678c6";
     const productId2 = "15b6fc6f-327a-4ec4-896f-486349e85a3d";
 
-    beforeAll((done) => {
-      loadProductsAPI(() => {
-        done();
+    beforeAll((MoveOn) => {
+      fetchProductsAsync().then(() => {
+        MoveOn();
       });
     });
 

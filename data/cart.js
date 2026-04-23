@@ -157,15 +157,35 @@ export const getItem = (productId) => {
 export const loadFakeCartAPI = (functions) => {
   const xhr = new XMLHttpRequest();
   xhr.addEventListener("load", () => {
-    const fakeCart = xhr.response;
-
-    if (fakeCart) {
-      console.log("Fake cart received from API");
-      functions();
-    } else {
-      console.log("Error loading cart API");
+    if (xhr.status >= 400) {
+      console.error("Server Error:", xhr.status);
+      return;
     }
+    const fakeCart = xhr.response;
+    console.log(fakeCart);
+    console.log("Cart received from API");
   });
-  xhr.open("GET", "https://supersimplebackend.dev/products");
+  xhr.open("GET", "https://supersimplebackend.dev/cart");
   xhr.send();
+  xhr.addEventListener("error", (error) => {
+    console.log("Error Recieiving Cart From API", "Error Details:", error);
+  });
+  functions();
+};
+
+export const loadFakeCartAsync = async () => {
+  try {
+    //throw "Test Error";
+    const response = await fetch("https://supersimplebackend.dev/cart");
+    if (!response.ok) {
+      // This 'throw' sends the code straight to the 'catch' block below if a server 400 or above error response is detected
+      throw new Error(`Server Error: ${response.status}`);
+    }
+    const data = await response.text();
+    const fakeCart = data;
+    console.log(fakeCart);
+    console.log("Cart received from API");
+  } catch (error) {
+    console.log("Error loading cart from API", error);
+  }
 };

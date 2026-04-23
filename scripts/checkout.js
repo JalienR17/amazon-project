@@ -3,22 +3,26 @@ import {
   deliveryOptionsHtml,
 } from "./checkout/order-summary.js";
 import { generatePaymentSummary } from "./checkout/payment-summary.js";
-import { loadProductsAPI } from "../data/products.js";
-import { loadFakeCartAPI } from "../data/cart.js";
+import { fetchProductsAsync } from "../data/products.js";
+import { loadFakeCartAsync } from "../data/cart.js";
 
-Promise.all([
-  new Promise((moveOn) => {
-    loadProductsAPI(() => {
-      moveOn();
-    });
-  }),
-  new Promise((moveOn) => {
-    loadFakeCartAPI(() => {
-      moveOn();
-    });
-  }),
-]).then(() => {
+/*Promise.all([fetchProductsAsync(), loadFakeCartAsync()]).then(() => {
   deliveryOptionsHtml();
   generatePaymentSummary();
   generateCartHtml();
-});
+});*/
+
+export const loadPageAPI = async () => {
+  try {
+    //throw "Test Error";
+    await Promise.all([fetchProductsAsync(), loadFakeCartAsync()]);
+  } catch (error) {
+    console.log("Error Recieiving From API", error);
+  }
+
+  deliveryOptionsHtml();
+  generatePaymentSummary();
+  generateCartHtml();
+};
+
+loadPageAPI();

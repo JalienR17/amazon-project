@@ -1,4 +1,4 @@
-import { products, loadProductsAPI } from "../data/products.js";
+import { products, fetchProductsAsync } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 //import { updateCartQuantity, forEachCartButton } from "../data/cart.js";
 import { cart } from "../data/cart-oop.js";
@@ -62,18 +62,21 @@ export const generateProductsHtml = () => {
 };
 
 Promise.all([
-  new Promise((moveOn) => {
-    loadProductsAPI(() => {
-      moveOn();
-    });
-  }),
-  new Promise((moveOn) => {
+  fetchProductsAsync(),
+  new Promise((moveOn, reject) => {
     loadFakeCartAPI(() => {
-      moveOn();
+      //reject("Throws an error in a call back");
+      moveOn(
+        "This is how the value of the response is stored in .then() as a parameter in an array",
+      );
     });
   }),
-]).then(() => {
-  generateProductsHtml();
-  cart.forEachCartButton();
-  cart.updateCartQuantity();
-});
+])
+  .then((valueOfResponse) => {
+    generateProductsHtml();
+    cart.forEachCartButton();
+    cart.updateCartQuantity();
+  })
+  .catch((error) => {
+    console.log(error);
+  });
