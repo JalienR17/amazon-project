@@ -9,11 +9,11 @@ export const loadCartFromStorage = () => {
 };
 loadCartFromStorage();
 
-export const addToCart = (productID, selection) => {
+export const addToCart = (productId, selection) => {
   let matchingProduct;
 
   cart.forEach((product) => {
-    if (productID === product.productID) {
+    if (productId === product.productId) {
       matchingProduct = product;
     }
   });
@@ -21,7 +21,7 @@ export const addToCart = (productID, selection) => {
   if (matchingProduct) {
     matchingProduct.quantity += selection;
   } else {
-    cart.push({ productID, quantity: selection, deliveryOptionId: "1" });
+    cart.push({ productId, quantity: selection, deliveryOptionId: "1" });
   }
 
   saveToLocalStorage();
@@ -44,14 +44,14 @@ export const updateCartQuantity = () => {
 
 export const forEachCartButton = () => {
   document.querySelectorAll(".js-add-cart").forEach((button) => {
-    const productID = button.dataset.productId;
+    const productId = button.dataset.productId;
 
     button.addEventListener("click", () => {
       const container = button.closest(".product-container");
       const selector = container.querySelector(".js-selector");
       const selection = Number(selector.value);
 
-      addToCart(productID, selection);
+      addToCart(productId, selection);
       updateCartQuantity();
     });
   });
@@ -59,12 +59,12 @@ export const forEachCartButton = () => {
 
 export const deleteFromCart = (productId) => {
   cart = cart.filter(
-    (item) => productId !== item.productID || item.quantity > 1,
+    (item) => productId !== item.productId || item.quantity > 1,
   ); // one linner filter function, which simplifies the code
   /*const newCart = [];
 
   cart.forEach((item) => {
-    if (item.productID !== productId || item.quantity > 1) {
+    if (item.productId !== productId || item.quantity > 1) {
       newCart.push(item);
     }
   });
@@ -79,11 +79,11 @@ export const deleteFromCart = (productId) => {
 
 export const deleteQuantity = (productId) => {
   cart.forEach((item) => {
-    /* if (productId === item.productID && item.quantity > 1) {
+    /* if (productId === item.productId && item.quantity > 1) {
       item.quantity--;
     }*/
 
-    if (productId === item.productID) {
+    if (productId === item.productId) {
       if (item.quantity > 1) {
         item.quantity--;
       }
@@ -99,7 +99,7 @@ export const saveNewQuantity = (productId, quantityInput) => {
   const newQuantity = Number(quantityInput.value);
 
   cart.forEach((item) => {
-    if (productId === item.productID) {
+    if (productId === item.productId) {
       if (newQuantity >= 0 && newQuantity < 1000) {
         item.quantity = newQuantity;
       } else {
@@ -130,7 +130,7 @@ export const calcPaymentSummary = () => {
   let totalShipping = 0;
 
   cart.forEach((item) => {
-    const matchingProduct = getProduct(item.productID);
+    const matchingProduct = getProduct(item.productId);
     const matchingOption = getOption(item.deliveryOptionId);
 
     if (matchingProduct) {
@@ -150,7 +150,7 @@ export const calcPaymentSummary = () => {
 };
 
 export const getItem = (productId) => {
-  const matchingItem = cart.find((item) => item.productID === productId);
+  const matchingItem = cart.find((item) => item.productId === productId);
   return matchingItem;
 };
 

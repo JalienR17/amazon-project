@@ -12,7 +12,7 @@ import { loadFakeCartAsync } from "../data/cart.js";
   generateCartHtml();
 });*/
 
-export const loadPageAPI = async () => {
+const loadPageAPI = async (functions) => {
   try {
     //throw "Test Error";
     await Promise.all([fetchProductsAsync(), loadFakeCartAsync()]);

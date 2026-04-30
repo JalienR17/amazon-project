@@ -21,12 +21,12 @@ const orderSummaryTest = () => {
       spyOn(localStorage, "getItem").and.callFake(() => {
         return JSON.stringify([
           {
-            productID: productId1,
+            productId: productId1,
             quantity: 1,
             deliveryOptionId: "1",
           },
           {
-            productID: productId2,
+            productId: productId2,
             quantity: 2,
             deliveryOptionId: "2",
           },
@@ -62,7 +62,7 @@ const orderSummaryTest = () => {
         document.querySelectorAll(".js-cart-item-container").length,
       ).toEqual(1);
       expect(cart.cartItems.length).toEqual(1);
-      expect(cart.cartItems[0].productID).toEqual(productId2);
+      expect(cart.cartItems[0].productId).toEqual(productId2);
       expect(
         document.querySelector(`.js-cart-item-container-${productId1}`),
       ).toEqual(null);

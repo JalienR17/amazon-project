@@ -9,11 +9,11 @@ const Cart = (localStorageKey) => {
       this.cartItems =
         JSON.parse(localStorage.getItem(`${localStorageKey}`)) || [];
     },
-    addToCart: function (productID, selection) {
+    addToCart: function (productId, selection) {
       let matchingProduct;
 
       this.cartItems.forEach((product) => {
-        if (productID === product.productID) {
+        if (productId === product.productId) {
           matchingProduct = product;
         }
       });
@@ -22,7 +22,7 @@ const Cart = (localStorageKey) => {
         matchingProduct.quantity += selection;
       } else {
         this.cartItems.push({
-          productID,
+          productId,
           quantity: selection,
           deliveryOptionId: "1",
         });
@@ -46,28 +46,28 @@ const Cart = (localStorageKey) => {
     },
     forEachCartButton: function () {
       document.querySelectorAll(".js-add-cart").forEach((button) => {
-        const productID = button.dataset.productId;
+        const productId = button.dataset.productId;
 
         button.addEventListener("click", () => {
           const container = button.closest(".product-container");
           const selector = container.querySelector(".js-selector");
           const selection = Number(selector.value);
 
-          this.addToCart(productID, selection);
+          this.addToCart(productId, selection);
           this.updateCartQuantity();
         });
       });
     },
     deleteFromCart: function (productId) {
       this.cartItems = this.cartItems.filter(
-        (item) => productId !== item.productID || item.quantity > 1,
+        (item) => productId !== item.productId || item.quantity > 1,
       );
 
       this.saveToLocalStorage();
     },
     deleteQuantity: function (productId) {
       this.cartItems.forEach((item) => {
-        if (productId === item.productID) {
+        if (productId === item.productId) {
           if (item.quantity > 1) {
             item.quantity--;
           }
@@ -84,7 +84,7 @@ const Cart = (localStorageKey) => {
       const newQuantity = Number(quantityInput.value);
 
       this.cartItems.forEach((item) => {
-        if (productId === item.productID) {
+        if (productId === item.productId) {
           if (newQuantity >= 0 && newQuantity < 1000) {
             item.quantity = newQuantity;
           } else {
@@ -113,7 +113,7 @@ const Cart = (localStorageKey) => {
       let totalShipping = 0;
 
       this.cartItems.forEach((item) => {
-        const matchingProduct = getProduct(item.productID);
+        const matchingProduct = getProduct(item.productId);
         const matchingOption = getOption(item.deliveryOptionId);
 
         if (matchingProduct) {
@@ -139,7 +139,7 @@ const Cart = (localStorageKey) => {
     },
     getItem: function (productId) {
       const matchingItem = this.cartItems.find(
-        (item) => item.productID === productId,
+        (item) => item.productId === productId,
       );
       return matchingItem;
     },
@@ -162,11 +162,11 @@ class CartClass {
       JSON.parse(localStorage.getItem(`${this.#localStorageKey}`)) || [];
   }
 
-  addToCart(productID, selection) {
+  addToCart(productId, selection) {
     let matchingProduct;
 
     this.cartItems.forEach((product) => {
-      if (productID === product.productID) {
+      if (productId === product.productId) {
         matchingProduct = product;
       }
     });
@@ -175,7 +175,7 @@ class CartClass {
       matchingProduct.quantity += selection;
     } else {
       this.cartItems.push({
-        productID,
+        productId,
         quantity: selection,
         deliveryOptionId: "1",
       });
@@ -201,14 +201,14 @@ class CartClass {
 
   forEachCartButton() {
     document.querySelectorAll(".js-add-cart").forEach((button) => {
-      const productID = button.dataset.productId;
+      const productId = button.dataset.productId;
 
       button.addEventListener("click", () => {
         const container = button.closest(".product-container");
         const selector = container.querySelector(".js-selector");
         const selection = Number(selector.value);
 
-        this.addToCart(productID, selection);
+        this.addToCart(productId, selection);
         this.updateCartQuantity();
       });
     });
@@ -216,7 +216,7 @@ class CartClass {
 
   deleteFromCart(productId) {
     this.cartItems = this.cartItems.filter(
-      (item) => productId !== item.productID || item.quantity > 1,
+      (item) => productId !== item.productId || item.quantity > 1,
     );
 
     this.saveToLocalStorage();
@@ -224,7 +224,7 @@ class CartClass {
 
   deleteQuantity(productId) {
     this.cartItems.forEach((item) => {
-      if (productId === item.productID) {
+      if (productId === item.productId) {
         if (item.quantity > 1) {
           item.quantity--;
         }
@@ -243,7 +243,7 @@ class CartClass {
     const newQuantity = Number(quantityInput.value);
 
     this.cartItems.forEach((item) => {
-      if (productId === item.productID) {
+      if (productId === item.productId) {
         if (newQuantity >= 0 && newQuantity < 1000) {
           item.quantity = newQuantity;
         } else {
@@ -274,7 +274,7 @@ class CartClass {
     let totalShipping = 0;
 
     this.cartItems.forEach((item) => {
-      const matchingProduct = getProduct(item.productID);
+      const matchingProduct = getProduct(item.productId);
       const matchingOption = getOption(item.deliveryOptionId);
 
       if (matchingProduct) {
@@ -301,7 +301,7 @@ class CartClass {
 
   getItem(productId) {
     const matchingItem = this.cartItems.find(
-      (item) => item.productID === productId,
+      (item) => item.productId === productId,
     );
     return matchingItem;
   }

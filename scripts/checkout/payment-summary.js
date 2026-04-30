@@ -1,6 +1,7 @@
 //import { updateCartQuantity, calcPaymentSummary } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
 import { cart } from "../../data/cart-oop.js";
+import { orders, addToOrders, placeOrderAPI } from "../../data/orders.js";
 
 export const generatePaymentSummary = () => {
   const cartQuantity = cart.updateCartQuantity();
@@ -35,11 +36,16 @@ export const generatePaymentSummary = () => {
         <div class="payment-summary-money">$${formatCurrency(total.grandTotal)}</div>
       </div>
 
-      <button class="place-order-button button-primary">
+      <button class="place-order-button button-primary js-place-order-button">
         Place your order
       </button>`;
 
   if (summaryContainer) {
     summaryContainer.innerHTML = html;
+
+    const orderButton = document.querySelector(".js-place-order-button");
+    orderButton.addEventListener("click", () => {
+      placeOrderAPI();
+    });
   }
 };

@@ -53,7 +53,7 @@ export const generateCartHtml = () => {
 
   if (cart.cartItems.length === 0) {
     document.querySelector(".js-empty-cart-title").innerHTML =
-      "<p> Your Cart Is Empty! :( </p>";
+      "<p style='display: flex; justify-content: center; font-size: 2rem'> Your Cart Is Empty! :( </p>";
     document.querySelector(".js-payment-summary").remove();
   }
 
@@ -61,13 +61,13 @@ export const generateCartHtml = () => {
     //products.forEach((product) => {
     //let matchingProduct;
     //let selectedOption;
-    const matchingProduct = getProduct(item.productID);
+    const matchingProduct = getProduct(item.productId);
     const selectedOption = getOption(item.deliveryOptionId);
     const today = dayjs();
     const deliveryDate = today.add(selectedOption.deliveryDays, "days");
     const formattedDate = deliveryDate.format("dddd, MMMM D");
 
-    /*if (item.productID === product.id) {
+    /*if (item.productId === product.id) {
         matchingProduct = product.id;
       }
 
