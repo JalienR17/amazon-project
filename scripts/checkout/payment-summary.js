@@ -1,7 +1,7 @@
 //import { updateCartQuantity, calcPaymentSummary } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
 import { cart } from "../../data/cart-oop.js";
-import { orders, addToOrders, placeOrderAPI } from "../../data/orders.js";
+import { orders } from "../../data/orders.js";
 
 export const generatePaymentSummary = () => {
   const cartQuantity = cart.updateCartQuantity();
@@ -45,7 +45,7 @@ export const generatePaymentSummary = () => {
 
     const orderButton = document.querySelector(".js-place-order-button");
     orderButton.addEventListener("click", () => {
-      placeOrderAPI();
+      orders.placeOrderAPI();
     });
   }
 };

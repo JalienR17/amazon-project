@@ -69,6 +69,7 @@ export const loadProductsAPI = (functions) => {
   xhr.addEventListener("error", (error) => {
     console.log("Error Recieiving API", "Error Details:", error);
   });
+
   functions();
 };
 

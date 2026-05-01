@@ -1,5 +1,6 @@
 import { cart } from "../data/cart-oop.js";
-import { products, getProduct, fetchProductsAsync } from "../data/products.js";
+import { products, getProduct } from "../data/products.js";
+import { loadPageAPI } from "../backend/backend-practice.js";
 
 const generateTrackingHtml = () => {
   const url = new URL(window.location.href);
@@ -43,15 +44,7 @@ const generateTrackingHtml = () => {
   document.querySelector(".js-main").innerHTML = html;
 };
 
-const loadPageAPI = async () => {
-  try {
-    await fetchProductsAsync();
-  } catch (error) {
-    console.log("Error Recieiving From API", error);
-  }
-
+loadPageAPI(() => {
   generateTrackingHtml();
   cart.updateCartQuantity();
-};
-
-loadPageAPI();
+});

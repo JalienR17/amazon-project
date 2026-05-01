@@ -1,8 +1,9 @@
 import { orders } from "../data/orders.js";
-import { getProduct, products, fetchProductsAsync } from "../data/products.js";
+import { getProduct, products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { cart } from "../data/cart-oop.js";
+import { loadPageAPI } from "../backend/backend-practice.js";
 
 const forEachOrdertButton = () => {
   document.querySelectorAll(".js-buy-again-button").forEach((button) => {
@@ -18,12 +19,12 @@ const forEachOrdertButton = () => {
 
 const generateOrdersHtml = () => {
   let ordersHtml = "";
-  if (orders.length === 0) {
+  if (orders.ordersList.length === 0) {
     document.querySelector(".js-page-title").innerHTML =
       "<p style='display: flex; justify-content: center; font-size: 2rem'> You Dont Have Any Orders! :( </p>";
   }
 
-  orders.forEach((order) => {
+  orders.ordersList.forEach((order) => {
     const orderDate = dayjs(order.orderTime).format("MMMM D");
 
     const generateOrderProductsHtml = () => {
@@ -101,16 +102,8 @@ const generateOrdersHtml = () => {
   document.querySelector(".js-orders-grid").innerHTML = ordersHtml;
 };
 
-const loadPageAPI = async () => {
-  try {
-    await fetchProductsAsync();
-  } catch (error) {
-    console.log("Error Recieiving From API", error);
-  }
-
+loadPageAPI(() => {
   generateOrdersHtml();
   forEachOrdertButton();
   cart.updateCartQuantity();
-};
-
-loadPageAPI();
+});
