@@ -1,7 +1,10 @@
-import { formatCurrency } from "../scripts/utils/money.js";
+import { formatCurrency } from "../scripts/utils/money.js"; // Imports the format currency function as its
+// being used with the methods in this file
 
 class Product {
-  id;
+  // Defines a class for a product to be used with the products array. This class will convert
+  // each products object into individual product classes.
+  id; // Defines the properties that will be used with each object.
   image;
   name;
   rating = {};
@@ -9,6 +12,8 @@ class Product {
   keywords = [];
 
   constructor(productDetails) {
+    // Prepares the constructor to take in the objects details as an argument and
+    // sets the corresponding values for each property.
     this.id = productDetails.id;
     this.image = productDetails.image;
     this.name = productDetails.name;
@@ -18,68 +23,131 @@ class Product {
   }
 
   getRatingStars() {
+    // Defines a method to get the current products rating stars to return the corresponding image.
     return `images/ratings/rating-${this.rating.stars * 10}.png`;
   }
 
   getPrice() {
+    // Defines a price method that uses format currency to get the current products price and return its
+    // value
     return `$${formatCurrency(this.priceCents)}`;
   }
 
   createLink() {
-    // polymorphing uses class method overwritting to make methods dynamic. Depending on the conditional match of a discriminator to select the proper class and methods for that data.
+    // polymorphing uses class method overwritting, making methods dynamic. Depending on the conditional match
+    //  of a discriminator to select the proper class and implement its relative data. This one leaves the tag
+    //  elements inner html blank as it doesnt match the proper class instance.
     return ``;
   }
 }
 
 class Clothing extends Product {
-  sizeChartLink;
+  // This is a cool feature of classes where it can extend its properties to
+  // a child class. The child class will inherit all of the properties and unique ones can also be added that
+  // would only pertain to that class. This is how specific classes can be used according to relavent data.
+  sizeChartLink; // This one has a unique size chart property besides all of the original ones.
 
   constructor(details) {
-    super(details);
+    // A constructor is being used to pass in the details of the product that have this
+    //  property.
+    super(details); // The super function is used to pass in the parents properties and their values. One
+    // important note to take is this is not needed if a constructor is not being used as its the main
+    // function of extending a class but since we are using a constructor we have to pass in the parents
+    // details manualy.
     this.sizeChartLink = details.sizeChartLink;
   }
 
   createLink() {
-    // polymorphing uses class method overwritting to make methods dynamic. Depending on the conditional match of a discriminator to select the proper class and methods for that data.
+    // This polymorph sets the link for the products that have the clothing type property.
     return `<a href="images/clothing-size-chart.png" target="_blank">Size Chart</a>`;
   }
 }
 
-export let products = [];
+/* Another note to have on classes is that they cannot define classes inside their scope, but a technique called "Manager Classes" can be used that does hold classes as properties inside. The class just has to be defined outside. Heres an example: class ProductsManager {
+  productsList = [];
+
+  // You can define which class to use for which "type" here
+  productTypes = {
+    'clothing': ClothingProduct,
+    'appliance': ApplianceProduct,
+    'default': BaseProduct
+  };
+
+  async fetchAndMapProducts() {
+    const response = await fetch("https://supersimplebackend.dev/products");
+    const productsData = await response.json();
+
+    this.productsList = productsData.map((productDetails) => {
+      // Logic to choose the right class
+      const ClassReference = this.productTypes[productDetails.type] || this.productTypes.default;
+      
+      // Creating the instance
+      return new ClassReference(productDetails);
+    });
+  }
+} */
+
+export let products = []; // Exports the products variable to be updated according to the data and used within
+//  the files that need it.
 
 export const loadProductsAPI = (functions) => {
-  const xhr = new XMLHttpRequest();
+  // Defines a call back function to make an xml request the old way, to
+  // show the connections and evolution of the new way. Helps build a deeper understanding of how the system
+  // works.
+
+  const xhr = new XMLHttpRequest(); // Variables a new instance of the request class.
   xhr.addEventListener("load", () => {
+    // Uses that variable to add an event listener that waits for the
+    // function to load before continuing.
     if (xhr.status >= 400) {
+      // If the status property has a value of 400 or greater it console logs a server
+      // error and stops the function from continuing.
       console.error("Server Error:", xhr.status);
       return;
     }
     products = JSON.parse(xhr.response).map((details) => {
+      // If it passes the error check it parses the
+      // xhr.response and maps it into a variable named products.
       if (details.type === "clothing") {
+        // This conditional uses the discriminator set into the object for
+        // the products to return the corresponding class type, then passes the details in as an argument to be
+        // used by the constructor.
         return new Clothing(details);
       } else {
         return new Product(details);
       }
     });
 
-    console.log("Products received from API");
+    console.log("Products received from API"); // If the script reaches this point then the products have been
+    // recieved and it logs it to the console.
   });
-  xhr.open("GET", "https://supersimplebackend.dev/products");
-  xhr.send();
   xhr.addEventListener("error", (error) => {
+    // This adds another event listener to listen for the error event,
+    //  in case of a network error apart from the server error above and sets a parameter to catch the details.
     console.log("Error Recieiving API", "Error Details:", error);
   });
+  xhr.open("GET", "https://supersimplebackend.dev/products"); // This defines the request
+  xhr.send(); // This sends the request and note it sends the request after the listener has been put in place.
 
-  functions();
+  functions(); // This runs the parameter set in the function as its meant to run the functions needed after
+  // the request has been recieved from the API. This is why its called a call back function. It must wait for
+  //  data in order to run the functions as the data is used by the functions waiting.
 };
 
 export const fetchProductsAPI = () => {
+  // Defines a fetch products function thats a slight step above the xml
+  //  request as it uses the fetch promise to make an API request.
   const promise = fetch("https://supersimplebackend.dev/products")
     .then((response) => {
-      //throw "This is how you set a manual error for testing";
-      return response.json();
+      // .then is a method for promises to run once the promise has been completed. It
+      // chains after the promise. It also holds the data fetched that has been passed over from the promise as
+      // a parameter but not yet parsed back from JSON format.
+      // throw "This is how you set a manual error for testing";
+      return response.json(); // Note how the promise must be returned in order to catch the parsed data with
+      // then in the following chain.
     })
     .then((data) => {
+      // Now that it has the parsed data it can be variabled with its corresponding class.
       products = data.map((details) => {
         if (details.type === "clothing") {
           return new Clothing(details);
@@ -90,22 +158,33 @@ export const fetchProductsAPI = () => {
       console.log("Products received from API");
     })
     .catch((error) => {
+      // .catch method is used and can be chained to the end to catch the network error.
       console.log("Error Recieiving API", "Error Details:", error);
     });
 
-  return promise;
+  return promise; // The whole promise is returned as the value of the function. Similar to how a newer async
+  // function does without the need to manualy return.
 };
 
 export const fetchProductsAsync = async () => {
+  // This the final evolution to making an xml request and the
+  // most up to date. It uses the keyword async to set the function as a promise and to be able to use the
+  // keyword await to easily wait for the data like a callback.
   try {
+    // Uses the try / catch block for error handling.
     //throw "test error";
-    const response = await fetch("https://supersimplebackend.dev/products");
+    const response = await fetch("https://supersimplebackend.dev/products"); // Variables the fetch and waits
+    // for it.
     if (!response.ok) {
-      // This 'throw' sends the code straight to the 'catch' block below if a server 400 or above error response is detected
-      throw new Error(`Server Error: ${response.status}`);
+      // This 'throw' sends the code straight to the 'catch' block below if a server 400 or above error
+      // response is detected from the ok property, so theres no need to return.
+      throw new Error(`Server Error: ${response.status}`); // The error details are stored in the status
+      // property
     }
-    const data = await response.json();
+    const data = await response.json(); // Waits for the reponse to parse and stores it in data.
     products = data.map((details) => {
+      // Now that it has the parsed data it can be variabled with its
+      // corresponding class.
       if (details.type === "clothing") {
         return new Clothing(details);
       } else {
@@ -114,6 +193,7 @@ export const fetchProductsAsync = async () => {
     });
     console.log("Products received from API");
   } catch (error) {
+    // Finally catches the network error if the try block fails.
     console.log("Error Recieiving Products From API", error);
   }
 };
@@ -598,6 +678,9 @@ export const fetchProductsAsync = async () => {
 });*/
 
 export const getProduct = (productId) => {
+  // Defines a get product function that uses the find method. Takes
+  //  the product id as an argument and uses it to find a matching product then returns that value and sets it
+  // as the functions value.
   const matchingProduct = products.find((product) => product.id === productId);
   return matchingProduct;
 };

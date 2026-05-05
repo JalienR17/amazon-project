@@ -45,7 +45,7 @@ export const generateProductsHtml = () => {
           <option value="10">10</option>
         </select>
       </div>
-      ${product.createLink()}
+      ${product.createLink()} 
       <div class="product-spacer"></div>
 
       <div class="added-to-cart">

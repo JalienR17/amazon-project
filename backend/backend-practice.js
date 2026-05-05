@@ -1,4 +1,4 @@
-import { fetchProductsAsync } from "../data/products.js"; // Importing my fetch functions
+import { fetchProductsAsync } from "../data/products.js"; // Imports the fetch functions
 import { loadFakeCartAsync } from "../data/cart.js";
 
 // This is an older more outdated way of making XML requests, with its functionality stored in a class
@@ -14,18 +14,17 @@ xhr.open("GET", "https://supersimplebackend.dev/products");
 xhr.send();
 
 // This is the updated way of making API calls. It uses async/await to wait for the response and automaticaly
-// returns a promise. We can use .then after this function since its value is a promise.
+// returns a promise..then(); can be used after this function since its value is a promise.
 export const loadPageAPI = async (functions) => {
   try {
     // Try catch can be used to catch network errors if the proccess breaks but not for server 400+ errors
-    //throw "Test Error";
     await Promise.all([fetchProductsAsync(), loadFakeCartAsync()]); // Await is similar to chaining promises
-    // so in order to have all the fetch calls load at the same time we use the Promise.all array.
+    // in order to have all the fetch calls load at the same time we use the Promise.all array.
   } catch (error) {
-    // the error parameter can be used to catch and store the error message in further detail
+    // The error parameter can be used to catch and store the error message in further detail
     console.log("Error Recieiving From API", error);
   }
 
-  functions(); // I run the parameter as this parameter is meant to run different functions, according to the
+  functions(); // Runs the parameter as this parameter is meant to run different functions, according to the
   //  page
 };
