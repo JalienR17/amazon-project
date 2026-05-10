@@ -53,7 +53,7 @@ class Clothing extends Product {
     super(details); // The super function is used to pass in the parents properties and their values. One
     // important note to take is this is not needed if a constructor is not being used as its the main
     // function of extending a class but since we are using a constructor we have to pass in the parents
-    // details manualy.
+    // details manually.
     this.sizeChartLink = details.sizeChartLink;
   }
 
@@ -124,7 +124,7 @@ export const loadProductsAPI = (functions) => {
   xhr.addEventListener("error", (error) => {
     // This adds another event listener to listen for the error event,
     //  in case of a network error apart from the server error above and sets a parameter to catch the details.
-    console.log("Error Recieiving API", "Error Details:", error);
+    console.log("Error Receiving API", "Error Details:", error);
   });
   xhr.open("GET", "https://supersimplebackend.dev/products"); // This defines the request
   xhr.send(); // This sends the request and note it sends the request after the listener has been put in place.
@@ -159,11 +159,11 @@ export const fetchProductsAPI = () => {
     })
     .catch((error) => {
       // .catch method is used and can be chained to the end to catch the network error.
-      console.log("Error Recieiving API", "Error Details:", error);
+      console.log("Error Receiving API", "Error Details:", error);
     });
 
   return promise; // The whole promise is returned as the value of the function. Similar to how a newer async
-  // function does without the need to manualy return.
+  // function does without the need to manually return.
 };
 
 export const fetchProductsAsync = async () => {
@@ -194,7 +194,7 @@ export const fetchProductsAsync = async () => {
     console.log("Products received from API");
   } catch (error) {
     // Finally catches the network error if the try block fails.
-    console.log("Error Recieiving Products From API", error);
+    console.log("Error Receiving Products From API", error);
   }
 };
 

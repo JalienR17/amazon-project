@@ -7,7 +7,7 @@
   updateDeliveryOptionId,
   saveNewQuantity,
 } from "../../data/cart.js";*/
-import { formatCurrency } from "../utils/money.js"; // Imports the neccessary data to run this file.
+import { formatCurrency } from "../utils/money.js"; // Imports the necessary data to run this file.
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"; // This is the dayjs import, which is coming
 //  from a server. This import simplifies getting the current date, in order to add the delivery days, as well
 // as update the date formats.
@@ -17,7 +17,7 @@ import { getProduct, products } from "../../data/products.js";
 import { cart } from "../../data/cart-oop.js";
 
 export const deliveryOptionsHtml = (productId, deliveryOptionId) => {
-  // Defines the delivery options html function so it can be inserted in the template literral of the generate
+  // Defines the delivery options html function so it can be inserted in the template literal of the generate
   //  cart html function, as this function will run a loop through the options array.
   let deliveryOptionsHtml = ""; // Sets the accumulator variable.
 
@@ -56,10 +56,12 @@ export const deliveryOptionsHtml = (productId, deliveryOptionId) => {
             </div>
           </div>
         </div>`;
-  }); // The options html is added to the accumulator according to each option and the product id is passed in as an argument to
+  }); // The options html is added to the accumulator according to each option and the product id is passed in
+  //  as an argument to
   // properly id each container using the for each loop ran through the carts items.
 
-  return deliveryOptionsHtml; // Then the value is returned so it can be used within the generate cart html function.
+  return deliveryOptionsHtml; // Then the value is returned so it can be used within the generate cart html
+  // function.
 };
 
 export const generateCartHtml = () => {
@@ -211,7 +213,7 @@ export const generateCartHtml = () => {
   document.querySelectorAll(".delivery-option").forEach((container) => {
     // Runs a for loop through each
     // delivery options container.
-    const { optionId, productId } = container.dataset; // Uses object deconstruction to shorthand variable
+    const { optionId, productId } = container.dataset; // Uses object destructering to shorthand variable
     container.addEventListener("click", () => {
       cart.updateDeliveryOptionId(productId, optionId); // Takes the dataset attributes holding both the
       // product id and the options id to update the carts data according to that containers clicked delivery

@@ -50,8 +50,8 @@ export const generatePaymentSummary = () => {
 
   if (summaryContainer) {
     // Adds a check to see if the container exists, to avoid a console error since the
-    // container is conditionaly removed in the order summary file if the cart is empty. If it passes, then the
-    //  html content is added to the container and the order buttons event listener is added.
+    // container is conditionally removed in the order summary file if the cart is empty. If it passes, then
+    // the html content is added to the container and the order buttons event listener is added.
     summaryContainer.innerHTML = html;
 
     const orderButton = document.querySelector(".js-place-order-button"); // Variables the order button
