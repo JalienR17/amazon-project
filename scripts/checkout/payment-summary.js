@@ -56,8 +56,7 @@ export const generatePaymentSummary = () => {
 
     const orderButton = document.querySelector(".js-place-order-button"); // Variables the order button
     orderButton.addEventListener("click", () => {
-      // Adds the click event listener and runs the place order
-      // method if its clicked.
+      // Adds the click event listener, and if clicked, it runs the place order method.
       orders.placeOrderAPI();
     });
   }
