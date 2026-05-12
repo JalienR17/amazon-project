@@ -1,4 +1,4 @@
-import { orders } from "../data/orders.js";
+import { orders } from "../data/orders.js"; // Imports the necessary files to run this page as modules.
 import { getProduct, products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
@@ -6,37 +6,58 @@ import { cart } from "../data/cart-oop.js";
 import { loadPageAPI } from "../backend/backend-practice.js";
 
 const forEachOrdertButton = () => {
+  // Creates a for each button function that runs a loop and adds a click
+  // event listener to run functions when clicked.
+  // This function is being defined first as im using function expressions to avoid hoisting unless absolutely
+  // needed
   document.querySelectorAll(".js-buy-again-button").forEach((button) => {
-    const productId = button.dataset.productId;
+    // Runs the loop for each button
+    const productId = button.dataset.productId; // Variables the product id stored as a data attribute.
 
     button.addEventListener("click", () => {
-      const selection = 1;
-      cart.addToCart(productId, selection);
-      cart.updateCartQuantity();
+      // Adds the click event listener for the button
+      const selection = 1; // Variables the selection to equal 1 as the add to cart method takes a quantity
+      // number value for its second parameter.
+      cart.addToCart(productId, selection); // Runs the add to cart method with the value of selection and the
+      // product id in that container.
+      cart.updateCartQuantity(); // Updates the cart quantity in the UI.
     });
   });
 };
 
 const generateOrdersHtml = () => {
-  let ordersHtml = "";
+  // Now the generate orders html function is defined which runs nested loops, one for each orders object and
+  //  the other for that objects products property which holds an array of products also stored in objects.
+  let ordersHtml = ""; // Sets the accumulator variable for the orders html which will be the outer container.
   if (orders.ordersList.length === 0) {
+    // Sets a check to see if the orders array is empty and properly informs
+    // the user by displaying a message in the UI.
     document.querySelector(".js-page-title").innerHTML =
-      "<p style='display: flex; justify-content: center; font-size: 2rem'> You Dont Have Any Orders! :( </p>";
+      "<p style='display: flex; justify-content: center; font-size: 2rem'> No Orders To Show! :( </p>";
   }
 
   orders.ordersList.forEach((order) => {
-    const orderDate = dayjs(order.orderTime).format("MMMM D");
+    // Starts the for each loop through the orders list.
+    const orderDate = dayjs(order.orderTime).format("MMMM D"); // Formats the orders time for better
+    // readability
 
     const generateOrderProductsHtml = () => {
-      let productsHtml = "";
+      // The products html function is defined.
+      let productsHtml = ""; // The html's accumulator variable.
 
       order.products.forEach((product) => {
+        // Now the second nested loop is ran so the products array
+        // for each order can be accessed and each products html properly displayed within the orders
+        // container.
         const expectedDate = dayjs(product.estimatedDeliveryTime).format(
           "MMMM D",
-        );
-        const matchingProduct = getProduct(product.productId);
+        ); // The expected date is also formatted for better readability.
+        const matchingProduct = getProduct(product.productId); // The product id is used to find the full
+        // information for that product within the original products array in order to use its property
+        // values. This is achieved with the function getProduct() which uses a find loop.
 
         if (matchingProduct) {
+          // If theres a matching product then the html is created using its values.
           productsHtml += `
             <div class="order-details-grid">
               <div class="product-image-container">
@@ -71,9 +92,9 @@ const generateOrdersHtml = () => {
         }
       });
 
-      return productsHtml;
+      return productsHtml; // Returns the products html so it can be inserted into the orders html container.
     };
-
+    // Now the orders html is created and the products function containing the value of the html is inserted.
     ordersHtml += `
       <div class="order-container js-order-container">
 
@@ -99,10 +120,13 @@ const generateOrdersHtml = () => {
     `;
   });
 
-  document.querySelector(".js-orders-grid").innerHTML = ordersHtml;
+  document.querySelector(".js-orders-grid").innerHTML = ordersHtml; // The full html is displayed into the
+  // orders grid container.
 };
 
 loadPageAPI(() => {
+  // The API data is loaded before the functions are ran. look into the checkout.js and
+  // backend-practice.js file for a more in depth analysis.
   generateOrdersHtml();
   forEachOrdertButton();
   cart.updateCartQuantity();

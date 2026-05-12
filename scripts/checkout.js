@@ -1,5 +1,5 @@
 import {
-  // Imports necessary files to run this page as modules
+  // Imports the necessary files to run this page as modules
   generateCartHtml,
   deliveryOptionsHtml,
 } from "./checkout/order-summary.js";
