@@ -54,7 +54,8 @@ const generateOrdersHtml = () => {
         ); // The expected date is also formatted for better readability.
         const matchingProduct = getProduct(product.productId); // The product id is used to find the full
         // information for that product within the original products array in order to use its property
-        // values. This is achieved with the function getProduct() which uses a find loop.
+        // values. This is achieved with the function getProduct() which uses a find loop to return a matching
+        //  product.
 
         if (matchingProduct) {
           // If theres a matching product then the html is created using its values.
