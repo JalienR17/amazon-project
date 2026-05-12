@@ -1,8 +1,9 @@
-import { cart } from "../data/cart-oop.js";
+import { cart } from "../data/cart-oop.js"; // Imports the necessary files to run this page as modules.
 import { products, getProduct } from "../data/products.js";
 import { loadPageAPI } from "../backend/backend-practice.js";
 
 const generateTrackingHtml = () => {
+  // Defines the function that will generate the html.
   const url = new URL(window.location.href);
   const orderId = url.searchParams.get("orderId");
   const productId = url.searchParams.get("productId");

@@ -58,6 +58,10 @@ const generateOrdersHtml = () => {
 
         if (matchingProduct) {
           // If theres a matching product then the html is created using its values.
+          // Note on this html creation theres a distinction from the others. The button which is inside the
+          // anchor tag made for links, is using search params in its href attribute, with unique IDs as
+          // well as other data needed for the tracking page.The params are being passed into the url with
+          // the ?/& symbols. Then extracted at the tracking page using the url class.
           productsHtml += `
             <div class="order-details-grid">
               <div class="product-image-container">
@@ -81,7 +85,7 @@ const generateOrdersHtml = () => {
               </div>
 
               <div class="product-actions">
-                <a href="tracking.html?orderId=${order.id}&productId=${matchingProduct.id}&arrival=${expectedDate}&quantity=${product.quantity}">
+                <a href="tracking.html?orderId=${order.id}&productId=${matchingProduct.id}&arrival=$    {expectedDate}&quantity=${product.quantity}">
                   <button class="track-package-button button-secondary">
                     Track package
                   </button>
