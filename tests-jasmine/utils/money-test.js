@@ -4,7 +4,7 @@ import { calcTax, formatCurrency } from "../../scripts/utils/money.js"; // Impor
 //  just kept under Jasmine's own script tags to properly load the framework.
 
 describe("Test Suite: calcTax", () => {
-  // Describe is the Jasmine function that is used to group related
+  // Describe is the Jasmine function that is used to group related.
   // tests together. The first parameter takes a string that displays in the UI as a title. While the second
   // parameter takes a function in which the test functions will be used.
   describe("Nesting describe is possible for grouping related tests like so :)", () => {
